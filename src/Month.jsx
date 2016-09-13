@@ -52,8 +52,27 @@ let propTypes = {
   ]),
 
   onSelectEvent: React.PropTypes.func,
-  onSelectSlot: React.PropTypes.func
+  onSelectSlot: React.PropTypes.func,
+
+  header: React.PropTypes.elementType
 };
+
+let Header = React.createClass({
+  render () {
+
+    let { day, idx, format, culture } = this.props;
+
+    return (
+      <div
+        key={'header_' + idx}
+        className='rbc-header'
+        style={segStyle(1, 7)}
+      >
+        { localizer.format(day, format, culture) }
+      </div>
+    )
+  }
+});
 
 let MonthView = React.createClass({
 
@@ -253,14 +272,15 @@ let MonthView = React.createClass({
     let first = row[0]
     let last = row[row.length - 1]
 
+    var HeaderToRender = this.props.header || Header;
+
     return dates.range(first, last, 'day').map((day, idx) =>
-      <div
-        key={'header_' + idx}
-        className='rbc-header'
-        style={segStyle(1, 7)}
-      >
-        { localizer.format(day, format, culture) }
-      </div>
+      <HeaderToRender 
+        day={day}
+        idx={idx}
+        format={format}
+        culture={culture}
+      />
     )
   },
 
